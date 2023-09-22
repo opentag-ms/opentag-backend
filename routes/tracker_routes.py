@@ -5,9 +5,10 @@ from sqlalchemy.exc import IntegrityError, NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from litestar import Litestar, get, post, put
+from litestar.controller import Controller
 from model.tracker import Tracker
 
-async def get_tracker(tracker_id: Any, session: AsyncSession) -> Tracker:
+async def get_tracker_async(tracker_id: int, session: AsyncSession) -> Tracker:
     query = select(Tracker).where(Tracker.id == tracker_id)
     result = await session.execute(query)
     try:
@@ -17,20 +18,29 @@ async def get_tracker(tracker_id: Any, session: AsyncSession) -> Tracker:
 
 
 async def get_trackers(transaction: AsyncSession, done: bool | None = None) -> list[Tracker]:
-    return await get_trackers(done, transaction)
+    pass
 
 
-@put("/{tracker_id:int}")
-async def update_tracker(tracker_id: int, data: Tracker, transaction: AsyncSession) -> Tracker:
-    tracker = await get_tracker(tracker_id, transaction)
-    tracker.name = data.name
-    tracker.fullname  = data.fullname
-    tracker.nickname = data.nickname
-    return tracker
+class TrackerController(Controller):
+	path = "/tracker"
+
+	@get("/{tracker_id:int}")
+	async def get_tracker(self, tracker_id: int, transaction: AsyncSession) -> Tracker:
+	    tracker = await get_tracker_async(tracker_id, transaction)
+	    return tracker
 
 
-@post("/")
-async def add_tracker(data: Tracker, transaction: AsyncSession) -> Tracker:
-    transaction.add(data)
-    return data
+	@put("/{tracker_id:int}")
+	async def update_tracker(self, tracker_id: int, data: Tracker, transaction: AsyncSession) -> Tracker:
+	    tracker = await get_tracker_async(tracker_id, transaction)
+	    tracker.name = data.name
+	    tracker.fullname  = data.fullname
+	    tracker.nickname = data.nickname
+	    return tracker
+
+
+	@post("/")
+	async def add_tracker(self, data: Tracker, transaction: AsyncSession) -> Tracker:
+	    transaction.add(data)
+	    return data
 
