@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from typing import List, Optional
 
 from sqlalchemy import DateTime, Integer, String, select
@@ -14,7 +14,6 @@ class Tracker(Base):
     __tablename__ = "tracker"
 
     id = mapped_column(Integer, primary_key=True)
-    name: Mapped[str]
-    fullname: Mapped[Optional[str]]
-    nickname: Mapped[Optional[str]] = mapped_column(String(64))
-    # create_date: Mapped[datetime] = mapped_column(insert_default=func.now())
+    longitude: Mapped[str]
+    latitude: Mapped[str]
+    lastSeen: Mapped[datetime]
