@@ -1,2 +1,4 @@
 litestar
 uvicorn
+sqlalchemy
+aiosqlite
