@@ -1,11 +1,14 @@
 import datetime
-from sqlalchemy.sql import func
-from typing import Optional, List
-from sqlalchemy import select, Integer, String, DateTime
+from typing import List, Optional
+
+from sqlalchemy import DateTime, Integer, String, select
 from sqlalchemy.exc import IntegrityError, NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.sql import func
+
 from model.base import Base
+
 
 class Tracker(Base):
     __tablename__ = "tracker"
@@ -14,5 +17,4 @@ class Tracker(Base):
     name: Mapped[str]
     fullname: Mapped[Optional[str]]
     nickname: Mapped[Optional[str]] = mapped_column(String(64))
-    #create_date: Mapped[datetime] = mapped_column(insert_default=func.now())
-
+    # create_date: Mapped[datetime] = mapped_column(insert_default=func.now())
