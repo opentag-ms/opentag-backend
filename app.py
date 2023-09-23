@@ -43,4 +43,4 @@ def create_table_if_not_exists():
 
 if __name__ == "__main__":
     create_table_if_not_exists()
-    uvicorn.run("app:app")
+    uvicorn.run("app:app", host="0.0.0.0", port=8000)
