@@ -1,11 +1,7 @@
 from datetime import datetime
-from typing import List, Optional
 
-from sqlalchemy import DateTime, Integer, String, select
-from sqlalchemy.exc import IntegrityError, NoResultFound
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy.sql import func
+from sqlalchemy import Integer
+from sqlalchemy.orm import Mapped, mapped_column
 
 from model.base import Base
 
@@ -13,7 +9,7 @@ from model.base import Base
 class Tracker(Base):
     __tablename__ = "tracker"
 
-    id = mapped_column(Integer, primary_key=True)
+    id_ = mapped_column(Integer, primary_key=True)
     longitude: Mapped[str]
     latitude: Mapped[str]
-    lastSeen: Mapped[datetime]
+    last_seen: Mapped[datetime]

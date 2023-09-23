@@ -1,18 +1,15 @@
-from collections.abc import AsyncGenerator
-from typing import Any
-
-from litestar import Litestar, get, post, put
+from litestar import get, put
 from litestar.controller import Controller
+from litestar.exceptions import NotFoundException
 from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError, NoResultFound
+from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from model.tracker import Tracker
 
 
 async def get_tracker_async(tracker_id: int, session: AsyncSession) -> Tracker:
-    query = select(Tracker).where(Tracker.id == tracker_id)
+    query = select(Tracker).where(Tracker.id_ == tracker_id)
     result = await session.execute(query)
     try:
         return result.scalar_one()
