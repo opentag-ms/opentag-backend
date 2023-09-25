@@ -2,3 +2,6 @@ litestar
 uvicorn
 sqlalchemy
 aiosqlite
+greenlet
+pydantic
+pydantic-extra-types

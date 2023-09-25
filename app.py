@@ -5,11 +5,10 @@ from litestar import Litestar
 from litestar.contrib.sqlalchemy.plugins import SQLAlchemyAsyncConfig, SQLAlchemyPlugin
 from litestar.exceptions import ClientException
 from litestar.status_codes import HTTP_409_CONFLICT
-from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from model.base import Base
+from model.models import Base
 from routes import tracker_routes
 
 
@@ -18,10 +17,7 @@ async def provide_transaction(db_session: AsyncSession) -> AsyncGenerator[AsyncS
         async with db_session.begin():
             yield db_session
     except IntegrityError as exc:
-        raise ClientException(
-            status_code=HTTP_409_CONFLICT,
-            detail=str(exc),
-        ) from exc
+        raise ClientException(status_code=HTTP_409_CONFLICT, detail=str(exc)) from exc
 
 
 db_config = SQLAlchemyAsyncConfig(connection_string="sqlite+aiosqlite:///opentag.sqlite")
@@ -43,4 +39,4 @@ app = Litestar(
 
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000)
+    uvicorn.run(app="app:app", host="0.0.0.0", port=8080)

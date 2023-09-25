@@ -2,9 +2,10 @@ version: "3.9"
 services:
   app:
     image: registry.digitalocean.com/opentag-ms/opentag-ms-backend
+    platform: linux/amd64
     build:
       context: .
     ports:
-      - "8000:8000"
+      - "8080:8080"
     volumes:
       - ./opentag.sqlite:/usr/src/app/opentag.sqlite
